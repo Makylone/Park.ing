@@ -1,0 +1,23 @@
+.calculator {
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+}
+
+.calculator__header {
+    margin-bottom: 28px;
+}
+
+.calculator__title {
+    font-size: 1.375rem;
+    font-weight: 500;
+    color: var(--color-text-primary, #1a1a18);
+    margin: 0 0 6px;
+}
+
+.calculator__subtitle {
+    font-size: 0.8125rem;
+    color: var(--color-text-muted, #7a7872);
+    margin: 0;
+    line-height: 1.5;
+}

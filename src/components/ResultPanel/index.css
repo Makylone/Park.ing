@@ -1,0 +1,36 @@
+.results-panel {
+    display: grid;
+    gap: 12px;
+}
+
+.results-panel__header {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    border-top: 0.5px solid var(--color-border, rgba(0, 0, 0, 0.12));
+    padding-top: 20px;
+    margin-bottom: 4px;
+}
+
+.results-panel__header-label {
+    font-size: 0.8125rem;
+    color: var(--color-text-muted, #7a7872);
+}
+
+.results-panel__header-value {
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: var(--color-text-primary, #1a1a18);
+}
+
+.results-panel__list {
+    display: grid;
+    gap: 12px;
+}
+
+.results-panel__disclaimer {
+    font-size: 0.75rem;
+    line-height: 1.5;
+    color: var(--color-text-hint, #b4b2a9);
+    margin: 4px 0 0;
+}
