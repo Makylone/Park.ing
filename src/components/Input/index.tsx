@@ -21,7 +21,7 @@ export default function Input({ onCalculate }: InputProps) {
           <input
             type="number"
             className="input-form__input"
-            value={currentPoints}
+            value={Number(currentPoints).toString()}
             min={0}
             onChange={(e) => setCurrentPoints(Number(e.target.value))}
           />
@@ -32,7 +32,7 @@ export default function Input({ onCalculate }: InputProps) {
           <input
             type="number"
             className="input-form__input"
-            value={targetPoints}
+            value={Number(targetPoints).toString()}
             min={0}
             onChange={(e) => setTargetPoints(Number(e.target.value))}
           />

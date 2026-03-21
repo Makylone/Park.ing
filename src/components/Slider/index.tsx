@@ -27,7 +27,7 @@ export default function Slider({ ...props }: SliderType) {
             min={props.min}
             max={props.max}
             step={props.step}
-            value={props.value}
+            value={Number(props.value).toString()}
             onChange={handleChange}
           />
           <span className="bonus-slider__unit">%</span>

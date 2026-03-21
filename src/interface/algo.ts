@@ -43,19 +43,8 @@ function generateSolutions(
         const remaining_points = points_needed - event_points * (num_games - 1);
         const overshoot = event_points * num_games - points_needed;
         if (overshoot > 0) {
-          console.info(
-            "iteration: " +
-              i +
-              " overshooted: " +
-              overshoot +
-              " number of step: " +
-              num_games,
-          );
           i++;
           continue;
-        }
-        if (overshoot === 0) {
-          console.info("Solution found at interation: " + i);
         }
         let last_game_set_up: SetUp | null = null;
         if (remaining_points < event_points && num_games > 1) {
@@ -99,9 +88,6 @@ function sortSolution(result: CalculationResult[]): CalculationResult[] {
     if (a.number_of_game !== b.number_of_game) {
       return a.number_of_game - b.number_of_game;
     }
-    /*if (a.cost_energy !== b.cost_energy) {
-      return a.cost_energy - b.cost_energy;
-      }*/
     if (a.range.min !== b.range.min) {
       return a.range.min - b.range.min;
     }
