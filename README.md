@@ -1,4 +1,4 @@
-# ProSeka Event Point Calculator
+# ProSeka Event Point Calculator (Park.ing)
 
 A tool for Project Sekai players to plan their final push during events. Given your current points, target points, and maximum event bonus, the calculator returns the best team setups to reach your goal, showing the number of games needed, energy usage, score range, and event points per game.
 
