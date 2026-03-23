@@ -1,6 +1,6 @@
-import type { CalculationResult } from "../../interface/calculator";
+import type { GameStep } from "../../interface/calculator";
 
 export type ResultsPanelType = {
-  results: CalculationResult[] | null;
+  games: GameStep[];
   pointsNeeded: number;
 };

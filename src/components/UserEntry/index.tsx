@@ -1,15 +1,12 @@
 import { useState } from "react";
 import Input from "../Input";
 import ResultPanel from "../ResultPanel";
-import type {
-  CalculationInput,
-  CalculationResult,
-} from "../../interface/calculator";
+import type { GameStep, CalculationInput } from "../../interface/calculator";
 import "./index.css";
-import { compute } from ".";
+import compute from "../../interface/algov2";
 
 export default function UserEntry() {
-  const [results, setResults] = useState<CalculationResult[]>([]);
+  const [games, setGames] = useState<GameStep[]>([]);
   const [pointsNeeded, setPointsNeeded] = useState<number>(0);
 
   const handleCalculate = (input: CalculationInput) => {
@@ -17,27 +14,29 @@ export default function UserEntry() {
     setPointsNeeded(needed);
 
     if (needed <= 0) {
-      setResults([]);
+      setGames([]);
       return;
     }
 
-    const solutions = compute(
+    const steps = compute(
       input.currentPoints,
       input.targetPoints,
       input.eventBonus,
     );
-    setResults(solutions);
+    setGames(steps);
   };
 
   return (
     <div className="calculator">
       <header className="calculator__header">
         <h1 className="calculator__title">Event point calculator</h1>
-        <p className="calculator__subtitle">Plan your final push.</p>
+        <p className="calculator__subtitle">
+          Plan your final push — same song, Easy difficulty.
+        </p>
       </header>
 
       <Input onCalculate={handleCalculate} />
-      <ResultPanel results={results} pointsNeeded={pointsNeeded} />
+      <ResultPanel games={games} pointsNeeded={pointsNeeded} />
     </div>
   );
 }

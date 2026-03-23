@@ -16,9 +16,17 @@ type CalculationResult = {
   range: { min: number; max: number };
 };
 
+type GameStep = {
+  number_of_game: number;
+  cost_energy: number;
+  event_bonus: number;
+  event_point_per_game: number;
+  range: { min: number; max: number };
+};
+
 type SetUp = {
   energy_usage: number;
   bracket: number;
 };
 
-export type { CalculationInput, CalculationResult, SetUp };
+export type { CalculationInput, CalculationResult, GameStep, SetUp };
