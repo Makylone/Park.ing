@@ -51,8 +51,7 @@ Although this seems perfect, it is far from that for multiple reasons:
 - [x] GitHub Pages deployment
 
 #### v2 — Update the algorithm
-- [ ] Fix the algorithm for odds numbers
-- [ ] Add an input to enter the max possibe live score 
+- [x] Add an input to enter the max possibe live score 
 - [ ] Add a form to enter the talent team and ISV
 
 #### v3 — Polish
@@ -61,8 +60,9 @@ Although this seems perfect, it is far from that for multiple reasons:
 
 ## Credits
 
-- Maaya (@./maaya_ou)
-- [Parking Spreadsheet](https://docs.google.com/spreadsheets/d/19KDNlfzjaOvS96kKe87xAfp2Rn5BHHpjVuVC9JqWbug) from Ai0 
+- Maaya for the formula (@./maaya_ou)
+- [Parking Spreadsheet](https://docs.google.com/spreadsheets/d/19KDNlfzjaOvS96kKe87xAfp2Rn5BHHpjVuVC9JqWbug) from Ai0
+- [えび japanesse sheet](https://docs.google.com/spreadsheets/d/1om--O7_NqvvQ6TDg1jrsjKMVBR_s1j1o)
 
 ## License
 
