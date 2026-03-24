@@ -149,7 +149,7 @@ export default function compute(
 
     const sortedGameSequence = gameSequence.sort((a, b) => {
       if (a.energyLevel !== a.energyLevel) {
-        return b.energyLevel - a.energyLevel;
+        return a.energyLevel - b.energyLevel;
       }
       return 0;
     });

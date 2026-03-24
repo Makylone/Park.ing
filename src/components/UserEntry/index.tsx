@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Input from "../Input";
 import ResultPanel from "../ResultPanel";
+import Spinner from "../Spinner";
 import type { GameStep, CalculationInput } from "../../utils/calculator";
 import "./index.css";
 import compute from "../../utils/algov2";
@@ -8,6 +9,7 @@ import compute from "../../utils/algov2";
 export default function UserEntry() {
   const [games, setGames] = useState<GameStep[]>([]);
   const [pointsNeeded, setPointsNeeded] = useState<number>(0);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleCalculate = (input: CalculationInput) => {
     const needed = input.targetPoints - input.currentPoints;
@@ -18,12 +20,18 @@ export default function UserEntry() {
       return;
     }
 
-    const steps = compute(
-      input.currentPoints,
-      input.targetPoints,
-      input.eventBonus,
-    );
-    setGames(steps);
+    setIsLoading(true);
+    setGames([]);
+
+    setTimeout(() => {
+      const steps = compute(
+        input.currentPoints,
+        input.targetPoints,
+        input.eventBonus,
+      );
+      setGames(steps);
+      setIsLoading(false);
+    }, 0);
   };
 
   return (
@@ -34,9 +42,11 @@ export default function UserEntry() {
           Plan your final push, with the same song.
         </p>
       </header>
-
       <Input onCalculate={handleCalculate} />
-      <ResultPanel games={games} pointsNeeded={pointsNeeded} />
+      {isLoading && <Spinner />}
+      {!isLoading && (
+        <ResultPanel games={games} pointsNeeded={pointsNeeded} />
+      )}{" "}
     </div>
   );
 }
