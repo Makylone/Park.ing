@@ -17,31 +17,43 @@ This is why I have created this calculator, that automatically tells you what to
 
 ## How it works
 
-The calculator assumes you're playing **Hitorinbo Envy on any difficulty** (as long as you are able to reach the range of score required) and focuses on the park (that is typically in the last ~100,000 points). It generates all possible combinations of energy usage, event bonus, and score brackets, then returns the top 3 solutions sorted by:
+In Project Sekai events, "parking" means stopping at an exact point total, typically to land on a ranking tier boundary or to include reference in it. This usually matters in the last ~100,000 points.
 
-1. Highest event bonus
-2. Fewest games
-3. Lowest live score 
+The calculator assumes you're playing **Hitorinbo Envy on any difficulty** (as long as you can reach the score range required) and generates a step-by-step game plan to hit your target exactly. Each step tells you what energy level and score bracket to aim for on that play.
 
-When the final game would overshoot, the calculator also suggests adjusted settings (lower energy and/or score bracket) for that last play.
+## How the math works
 
-## What the math behind
+The calculator uses a formula (shared by @./maaya_ou on Discord) to compute event points based on three inputs: your live score, your event bonus, and your energy usage (which maps to a specific multiplier).
 
-The calculator uses the formula (taken from @./maaya_ou on discord) to calculate the event point, base on the live score, event bonus and the energy usage (that correspond to a certain multiplier).
 The formula looks like this:
 
 $$\text{Event Point} = \text{Multiplier} \times \left\lfloor (1 + \text{Event Bonus}) \times \left(100 + \left\lfloor \frac{\text{Live Score}}{20000} \right\rfloor \right) \right\rfloor$$
 
-The calulator will generate all the solution from top to bottom, starting with the highest event bonus possible, then fewest games and after that lowest live score.
-If there is no solution in one game, the calculator will add +1 to the step and redo the same thing again, until it found a solution.
-It means that most of the time, the park would require no change on the current event team, as it is simplier to park without tweaking the event team.
+The ⌊ ⌋ symbols mean "floor", round down to the nearest whole number. So a live score of 45,000 gives ⌊45,000 / 20,000⌋ = ⌊2.25⌋ = 2.
 
-## Limitation of this calculator
+### The old approach (brute force)
 
-Although this seems perfect, it is far from that for multiple reasons:
+The previous version of the calculator generated every possible combination from top to bottom: starting with the highest event bonus, then the fewest games, then the lowest live score. If no single-game solution existed, it would add one more game and repeat the search until it found a valid result.
 
-- Because I decided to not make any changes on the setup, sometimes the calculator might just asks you to do 50,100 or 200 games, which too much obviously. If that's the case, try to get a bit closer to your park by playing **Hitorinbo Envy with 0 energy usage in easy difficulty**.
-- Since there is no forms to input your maximum talent, the calculator might asking you to do impossible bracket score for your event team. For now, the calculator is capped at 2mil live score, meaning it wont ask you to do more than 2mil live score to park.
+This meant that most of the time, parking required no changes to the player's current event team, since it's simpler to park without tweaking the team composition.
+
+### The new approach (dynamic programming)
+
+The current calculator uses dynamic programming to find the fewest games needed to reach the exact target.
+
+Here's how it works step by step:
+
+1. **Build a table of all achievable event point values.** For a given event bonus, the calculator computes every possible event point value across all score brackets (the range your live score falls into) and energy levels. Each unique value becomes a "coin" we can use.
+
+2. **Find the shortest combination that adds up to the target.** This is the same idea as the classic [coin change problem](https://en.wikipedia.org/wiki/Change-making_problem). Imagine you have coins worth 1, 2, and 5. To make exactly 10, the shortest way is 5 + 5 (two coins), even though you could also use 2 + 2 + 2 + 2 + 2 (five coins) or ten 1s. The calculator does exactly this, but instead of coin values, it uses event point values, and instead of coins, it picks games with specific energy and score settings.
+
+3. **Reconstruct the game plan.** Once the shortest combination is found, the calculator traces back through its choices to build the full sequence: which energy level and score bracket to aim for on each game.
+
+The result is a game-by-game plan where every play might have different settings, but the total adds up to your target with zero overshoot.
+
+## Limitations
+
+- **Score range may exceed your team's ability.** Since the calculator has no input for your team's talent, it might suggest a score bracket your team can't reach. For now, the calculator is capped at a 2,000,000 live score, so it won't ask for anything above that, but it could still suggest ranges that are difficult for lower-power teams.
 
 ## Roadmap
 

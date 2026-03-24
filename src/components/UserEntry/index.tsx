@@ -1,9 +1,9 @@
 import { useState } from "react";
 import Input from "../Input";
 import ResultPanel from "../ResultPanel";
-import type { GameStep, CalculationInput } from "../../interface/calculator";
+import type { GameStep, CalculationInput } from "../../utils/calculator";
 import "./index.css";
-import compute from "../../interface/algov2";
+import compute from "../../utils/algov2";
 
 export default function UserEntry() {
   const [games, setGames] = useState<GameStep[]>([]);
@@ -31,7 +31,7 @@ export default function UserEntry() {
       <header className="calculator__header">
         <h1 className="calculator__title">Event point calculator</h1>
         <p className="calculator__subtitle">
-          Plan your final push — same song, Easy difficulty.
+          Plan your final push, with the same song.
         </p>
       </header>
 

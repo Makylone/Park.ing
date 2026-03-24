@@ -1,4 +1,4 @@
-import type { GameStep } from "../interface/calculator";
+import type { GameStep } from "./calculator";
 
 /**
  * Represents one possible way to earn event points in a single game.
@@ -14,7 +14,7 @@ type GameOption = {
 /** Maps energy level (0–10) to its point multiplier. */
 const ENERGY_MULTIPLIERS = [1, 5, 10, 15, 20, 25, 27, 29, 31, 33, 35];
 
-/** Number of score brackets (score / 20000, ranging from 0 to 124). */
+/** Number of score brackets (score / 20000, ranging from 0 to 101 (cap at 2mil live score)). */
 const SCORE_BRACKET_COUNT = 101;
 
 /** Number of energy levels available (0 through 10). */
@@ -68,11 +68,11 @@ function buildGameOptionsTable(eventBonus: number): GameOption[] {
 function findMinGames(
   availableOptions: GameOption[],
   target: number,
-): { totalGames: number; bestOptionAt: GameOption[] } | null {
+): { totalGames: number; bestOptionAt: (GameOption | null)[] } | null {
   const UNREACHABLE = target + 1;
 
   const minGamesAt = new Array(target + 1).fill(UNREACHABLE);
-  const bestOptionAt = new Array<GameOption>(target + 1).fill(null as any);
+  const bestOptionAt = new Array<GameOption | null>(target + 1).fill(null);
 
   minGamesAt[0] = 0;
 
@@ -106,14 +106,14 @@ function findMinGames(
  * the remaining points reach zero.
  */
 function reconstructGameSequence(
-  bestOptionAt: GameOption[],
+  bestOptionAt: (GameOption | null)[],
   target: number,
 ): GameOption[] {
   const sequence: GameOption[] = [];
   let remainingPoints = target;
 
   while (remainingPoints > 0) {
-    const chosenOption = bestOptionAt[remainingPoints];
+    const chosenOption = bestOptionAt[remainingPoints]!;
     sequence.push(chosenOption);
     remainingPoints -= chosenOption.eventPoints;
   }
@@ -147,8 +147,14 @@ export default function compute(
       pointsNeeded,
     );
 
-    return gameSequence.map((option) => ({
-      overshoot: 0,
+    const sortedGameSequence = gameSequence.sort((a, b) => {
+      if (a.energyLevel !== a.energyLevel) {
+        return b.energyLevel - a.energyLevel;
+      }
+      return 0;
+    });
+
+    return sortedGameSequence.map((option) => ({
       number_of_game: result.totalGames,
       cost_energy: option.energyLevel,
       event_bonus: eventBonus,

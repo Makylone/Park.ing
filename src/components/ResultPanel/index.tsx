@@ -1,7 +1,6 @@
 import GameRow from "../GameRow/index.tsx";
 import type { ResultsPanelType } from "./ResultPanelType";
 import "./index.css";
-const multiplier = [1, 5, 10, 15, 20, 25, 27, 29, 31, 33, 35];
 export default function ResultPanel({ games, pointsNeeded }: ResultsPanelType) {
   if (games.length === 0) return null;
 
@@ -45,7 +44,6 @@ export default function ResultPanel({ games, pointsNeeded }: ResultsPanelType) {
             key={i}
             index={i + 1}
             energy={game.cost_energy}
-            multiplier={multiplier[game.cost_energy]}
             scoreMin={game.range.min}
             scoreMax={game.range.max}
             eventPoints={game.event_point_per_game}
@@ -54,8 +52,8 @@ export default function ResultPanel({ games, pointsNeeded }: ResultsPanelType) {
       </div>
 
       <p className="results-panel__disclaimer">
-        Easy difficulty, same song repeated. Each row is one play — follow the
-        sequence exactly to land on your target with zero overshoot.
+        Same song repeated. Each row is one play, follow the sequence exactly to
+        land on your target.
       </p>
     </div>
   );

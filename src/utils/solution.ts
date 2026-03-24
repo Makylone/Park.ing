@@ -1,4 +1,7 @@
 /*
+
+precious pseudo code of the old algorithm
+
 multiplier = [1,5,10,15,20,25,27,29,31,33,35]
 for (event_bonus = userMaxEvent_bonus; event_bonus >= 0; event_bonus -= 1)
   for (energy = 10; energy >= 0; energy -= 1)
