@@ -55,7 +55,7 @@ The result is a game-by-game plan where every play might have different settings
 
 - **Score range may exceed your team's ability.** Since the calculator has no input for your team's talent, it might suggest a score bracket your team can't reach. For now, the calculator is capped at a 2,000,000 live score, so it won't ask for anything above that, but it could still suggest ranges that are difficult for lower-power teams.
 
-- **Large point gaps may freeze the browser.** The algorithm builds an array as large as the point gap and loops over every game option for each entry. For small gaps (under ~10,000), this is instant. For larger gaps (50,000+), the computation can take several seconds, and since it runs on the main thread, the page will be unresponsive until it finishes. There's currently no loading indicator or way to cancel.
+- **Large point gaps may freeze the browser.** The algorithm builds an array as large as the point gap and loops over every game option for each entry. For small gaps (under ~10,000), this is instant. For larger gaps (50,000+), the computation can take several seconds, and since it runs on the main thread, the page will be unresponsive until it finishes. There's a spin loading, to indicate to the user that the computation is in progress.
 
 ## Roadmap
 
