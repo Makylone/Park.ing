@@ -21,6 +21,36 @@ const SCORE_BRACKET_COUNT = 101;
 const ENERGY_LEVEL_COUNT = 11;
 
 /**
+ * Estimates the maximum live score a player can achieve based on their
+ * team talent and the team's ISV.
+ *
+ * ISV is formatted as "front/back" (e.g. "150/700"), where:
+ *   - front = the ISV component weighted at 80% (4/5)
+ *   - back  = the ISV component weighted at 20% (1/5)
+ *
+ * The formula converts these into a combined percentage, then scales
+ * by talent using empirically derived constants minus 140000 (counting for the randomness of the skill proc).
+ */
+export function estimateMaxLiveScore(talent: number, isv: string): number {
+  const [frontRaw, backRaw] = isv.split("/");
+  const frontISV = parseInt(frontRaw);
+  const backISV = parseInt(backRaw);
+  const weightedISV = (4 * frontISV + backISV) / 5;
+  const isvMultiplier = weightedISV / 100;
+  return Math.floor(
+    ((217 / 21815) * talent * (195.784 * isvMultiplier + 250.562)) - 140000,
+  );
+}
+
+/**
+ * Converts a live score into its score bracket (⌊score / 20000⌋).
+ * Each bracket represents a range of 20,000 points.
+ */
+function scoreToBracket(score: number): number {
+  return Math.floor(score / 20000);
+}
+
+/**
  * Generates every unique event point value achievable for a given event bonus.
  *
  * Iterates over all combinations of score brackets (0–124) and energy levels (0–10),
@@ -30,11 +60,14 @@ const ENERGY_LEVEL_COUNT = 11;
  * Deduplicates by event point value, keeping only the first occurrence
  * (which has the lowest energy and score bracket for that point value).
  */
-function buildGameOptionsTable(eventBonus: number): GameOption[] {
+function buildGameOptionsTable(eventBonus: number, maxBracket?: number): GameOption[] {
   const seenPointValues = new Set<number>();
   const options: GameOption[] = [];
-
-  for (let bracket = 0; bracket < SCORE_BRACKET_COUNT; bracket++) {
+  let maximumBracket = SCORE_BRACKET_COUNT;
+  if(maxBracket){
+    maximumBracket = maxBracket;
+  }
+  for (let bracket = 0; bracket < maximumBracket; bracket++) {
     for (let energy = 0; energy < ENERGY_LEVEL_COUNT; energy++) {
       const baseScore = 100 + bracket;
       const bonusMultiplier = 1 + eventBonus / 100;
@@ -125,7 +158,10 @@ function reconstructGameSequence(
  * Main entry point: computes the optimal game-by-game plan to earn
  * exactly (targetPoints - currentPoints) event points.
  *
- * Tries the user's max event bonus first, then decreases by 1 each
+ * Uses the player's talent and ISV to cap the score bracket search space,
+ * so the algorithm only suggests games the player can actually achieve.
+ *
+ * Tries the user's max event bonus first, then decreases by 5 each
  * iteration until an exact solution is found. Returns the game sequence
  * for the highest event bonus that works.
  */
@@ -133,28 +169,26 @@ export default function compute(
   currentPoints: number,
   targetPoints: number,
   maxEventBonus: number,
+  isv: string,
+  talent: number,
 ): GameStep[] {
   const pointsNeeded = targetPoints - currentPoints;
-
-  for (let eventBonus = maxEventBonus; eventBonus >= 0; eventBonus--) {
-    const options = buildGameOptionsTable(eventBonus);
+  const maxLiveScore = estimateMaxLiveScore(talent, isv);
+  const maxBracket = scoreToBracket(maxLiveScore);
+ 
+  for (let eventBonus = maxEventBonus; eventBonus >= 0; eventBonus -= 5) {
+    const options = buildGameOptionsTable(eventBonus, maxBracket);
     const result = findMinGames(options, pointsNeeded);
-
+ 
     if (result === null) continue;
-
+ 
     const gameSequence = reconstructGameSequence(
       result.bestOptionAt,
       pointsNeeded,
     );
-
-    const sortedGameSequence = gameSequence.sort((a, b) => {
-      if (a.energyLevel !== a.energyLevel) {
-        return a.energyLevel - b.energyLevel;
-      }
-      return 0;
-    });
-
-    return sortedGameSequence.map((option) => ({
+ 
+    return gameSequence.map((option) => ({
+      overshoot: 0,
       number_of_game: result.totalGames,
       cost_energy: option.energyLevel,
       event_bonus: eventBonus,
@@ -165,6 +199,6 @@ export default function compute(
       },
     }));
   }
-
+ 
   return [];
 }

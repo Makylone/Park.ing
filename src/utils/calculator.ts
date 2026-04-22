@@ -2,6 +2,8 @@ type CalculationInput = {
   currentPoints: number;
   targetPoints: number;
   eventBonus: number;
+  isv: string;
+  talent: number;
 };
 
 type GameStep = {

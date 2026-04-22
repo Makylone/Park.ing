@@ -28,6 +28,8 @@ export default function UserEntry() {
         input.currentPoints,
         input.targetPoints,
         input.eventBonus,
+        input.isv,
+        input.talent
       );
       setGames(steps);
       setIsLoading(false);
