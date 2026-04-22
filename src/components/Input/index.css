@@ -85,7 +85,6 @@
 }
 
 .input-form__tooltip-text {
-  display: none;
   position: absolute;
   bottom: calc(100% + 8px);
   left: 50%;
@@ -100,10 +99,6 @@
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   z-index: 10;
-}
-
-.input-form__tooltip-wrapper:hover .input-form__tooltip-text {
-  display: block;
 }
 
 .input-form__score-readout-value {

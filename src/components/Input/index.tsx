@@ -13,6 +13,7 @@ export default function Input({ onCalculate }: InputProps) {
   const [eventBonus, setEventBonus] = useState<number>(150);
   const [isv, setIsv] = useState<string>("100/100");
   const [talent, setTalent] = useState<number>(250000);
+  const [showTooltip, setShowTooltip] = useState<boolean>(false);
  
   const maxLiveScore = useMemo(() => {
     if (!ISV_PATTERN.test(isv) || talent <= 0) return null;
@@ -80,13 +81,18 @@ export default function Input({ onCalculate }: InputProps) {
         <div className="input-form__score-readout">
           <span className="input-form__score-readout-label">
             Estimated max live score
-            <span className="input-form__tooltip-wrapper">
+            <span
+              className="input-form__tooltip-wrapper"
+              onClick={() => setShowTooltip(!showTooltip)}
+            >
               <span className="input-form__tooltip-icon">!</span>
-              <span className="input-form__tooltip-text">
-                This is an estimation, the actual max live score can be higher than the one shown here. 
-                That's because of the randomness skill proc, which can impact the live score at the end. <br/>
-                <b> In theory, the max live score shows here is underestimate, so the calculator wont propose a score range impossible to reach for your current team.</b> 
-              </span>
+              {showTooltip && (
+                <span className="input-form__tooltip-text">
+                  This is an estimation, the actual max live score can be higher than the one shown here. 
+                  That's because of the randomness skill proc, which can impact the live score at the end. <br/>
+                  <b> In theory, the max live score shows here is underestimate, so the calculator wont propose a score range impossible to reach for your current team.</b> 
+                </span>
+              )}
             </span>
           </span>
           <span className="input-form__score-readout-value">
