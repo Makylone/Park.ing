@@ -11,7 +11,7 @@ export default function Input({ onCalculate }: InputProps) {
   const [currentPoints, setCurrentPoints] = useState<number>(970000);
   const [targetPoints, setTargetPoints] = useState<number>(1000000);
   const [eventBonus, setEventBonus] = useState<number>(150);
-  const [isv, setIsv] = useState<string>("100/100");
+  const [isv, setIsv] = useState<string>("150/700");
   const [talent, setTalent] = useState<number>(250000);
   const [showTooltip, setShowTooltip] = useState<boolean>(false);
  
