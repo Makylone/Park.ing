@@ -5,7 +5,7 @@ export default function Footer() {
     <footer className="footer">
       <p className="footer__label">Credits</p>
       <ul className="footer__list">
-        <li>Maaya for the formula (@./maaya_ou)</li>
+        <li>Maaya for the formula (@./maaya_ou on discord)</li>
         <li>
           <a
             href="https://docs.google.com/spreadsheets/d/19KDNlfzjaOvS96kKe87xAfp2Rn5BHHpjVuVC9JqWbug"
